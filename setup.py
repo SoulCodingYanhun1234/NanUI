@@ -6,7 +6,7 @@ def read_requirements():
 
 setup(
     name="NanUI",
-    version="0.1.0",
+    version="0.1.1",
     packages=find_packages(),
     install_requires=read_requirements(),
     description="一个基于 PySide6 的自定义 UI 组件库",
