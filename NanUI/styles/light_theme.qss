@@ -1,0 +1,436 @@
+/*-------------标签（Label）-------------*/
+
+QLabel {
+    color: #000000;
+    background: #ecf0f1;
+    border-radius: 8px;
+    padding: 6px 12px;
+    border: none;
+    min-height: 20px;
+    max-height: 50px;
+    height: 30px;
+    font-weight: normal;
+}
+
+/*-------------窗口（Window）（由 Deepseek 网页端提供）-------------*/
+/* 标题栏（正常状态） */
+QWidget#titleBar {
+    background-color: #ecf0f1;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+/* 标题栏内的标题文字：背景透明，不受全局 QLabel 背景影响 */
+QLabel#titleLabel {
+    background: transparent;
+    border: none;
+}
+/* 内容区域（正常状态） */
+QWidget#contentWidget {
+    background-color: #f5f7fa;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/*
+ * 窗口最大化时由 _update_appearance() 动态覆盖，去掉 border-radius：
+ *   QWidget#titleBar { background-color: #ecf0f1; }
+ *   QWidget#contentWidget { background-color: #f5f7fa; }
+ * 恢复时重新设回上面的圆角样式（radius 取自 self._original_radius）。
+ */
+
+/*-------------按钮（PushButton）-------------*/
+
+QPushButton {
+    background-color: #e8f0fe;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #000000;
+    min-height: 20px;
+    max-height: 50px;
+    height: 30px;
+    font-weight: normal;
+}
+QPushButton:hover {
+    /* background-color: #d0e0f5; */
+    background-color: #e0ecff;
+}
+QPushButton:pressed {
+    background-color: #e8f0fe;
+}
+QPushButton:disabled {
+    background-color: #e0e0e0;
+    color: #a0a0a0;
+}
+
+/*-------------单行输入框（LineEdit）-------------*/
+
+QLineEdit {
+    background-color: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #1c1c1c;
+    min-height: 20px;
+    max-height: 40px;
+    font-size: 14px;
+}
+QLineEdit:focus {
+    border-color: #e0ecff;
+    /* background-color: #fafcff; */
+}
+QLineEdit::placeholder {
+    color: #a0b0c0;
+}
+
+/*-------------菜单（QMenu）-------------*/
+
+QMenu {
+    background-color: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    padding: 6px 0px;
+}
+QMenu::item {
+    padding: 6px 24px;
+    color: #1c1c1c;
+    background-color: transparent;
+}
+QMenu::item:selected {
+    background-color: #e8f0fe;
+    color: #000000;
+}
+QMenu::item:pressed {
+    background-color: #d0e0f5;
+}
+QMenu::separator {
+    height: 1px;
+    background: #d0d7de;
+    margin: 4px 12px;
+}
+QMenu::icon {
+    width: 0px;
+}
+
+/*-------------多行文本框（TextEdit）-------------*/
+QTextEdit {
+    background-color: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #1c1c1c;
+    font-size: 14px;
+    min-height: 60px;
+}
+QTextEdit:focus {
+    border-color: #e0ecff;
+    /* background-color: #fafcff;*/
+}
+QTextEdit::selection {
+    background-color: #e0ecff;
+    color: #1c1c1c;
+}
+
+/*-------------滚动条（QScrollBar）（由 DeepSeek 网页版提供）-------------*/
+
+QScrollBar:vertical {
+    background-color: #f0f2f5;
+    width: 12px;
+    border-radius: 6px;
+    margin: 4px 2px 4px 2px;
+}
+QScrollBar::handle:vertical {
+    background-color: #d0d7de;
+    border-radius: 6px;
+    min-height: 20px;
+}
+QScrollBar::handle:vertical:hover {
+    background-color: #b0b8c4;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+    background: transparent;
+}
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+QScrollBar:horizontal {
+    background-color: #f0f2f5;
+    height: 12px;
+    border-radius: 6px;
+    margin: 2px 4px 2px 4px;
+}
+QScrollBar::handle:horizontal {
+    background-color: #d0d7de;
+    border-radius: 6px;
+    min-width: 20px;
+}
+QScrollBar::handle:horizontal:hover {
+    background-color: #b0b8c4;
+}
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
+    background: transparent;
+}
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
+}
+
+/*-------------复选框（CheckBox）（由 DeepSeek 网页版提供）-------------*/
+QCheckBox {
+    background-color: transparent;
+    color: #1c1c1c;
+    font-size: 14px;
+    spacing: 8px;          /* 文本与指示器之间的间距 */
+    padding: 4px 0px;
+}
+
+/* 指示器（方框） */
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 2px solid #d0d7de;
+    background-color: transparent;
+}
+QCheckBox::indicator:hover {
+    border-color: #a0b0c0;
+    background-color: transparent;
+}
+QCheckBox::indicator:pressed {
+    border-color: #8a9cb0;
+    background-color: transparent;
+}
+
+/* 选中状态 */
+QCheckBox::indicator:checked {
+    background-color: transparent;
+    border-color: #d0d7de;
+    image: url(:/icons/check);
+}
+
+QCheckBox::indicator:checked:hover {
+    border-color: #a0b0c0;
+    background-color: transparent;
+}
+QCheckBox::indicator:checked:pressed {
+    border-color: #8a9cb0;
+    background-color: transparent;
+}
+
+/* 禁用状态 */
+QCheckBox:disabled {
+    color: #a0a0a0;
+}
+QCheckBox::indicator:disabled {
+    border-color: #d0d7de;
+    background-color: #f0f2f5;
+}
+QCheckBox::indicator:checked:disabled {
+    background-color: #b0b8c4;
+}
+
+/*-------------单选按钮（RadioButton）-------------*/
+
+QRadioButton {
+    background-color: transparent;
+    color: #1c1c1c;
+    font-size: 14px;
+    spacing: 8px;
+    padding: 4px 0px;
+}
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 9px;
+    border: 2px solid #d0d7de;
+    background-color: transparent;
+}
+QRadioButton::indicator:hover {
+    border-color: #a0b0c0;
+}
+QRadioButton::indicator:pressed {
+    border-color: #8a9cb0;
+}
+QRadioButton::indicator:checked {
+    background-color: #3498db;
+    border-color: #d0d7de;
+}
+QRadioButton::indicator:checked:hover {
+    background-color: #2980b9;
+    border-color: #a0b0c0;
+}
+QRadioButton::indicator:checked:pressed {
+    background-color: #3498db;
+    border-color: #8a9cb0;
+}
+QRadioButton:disabled {
+    color: #a0a0a0;
+}
+QRadioButton::indicator:disabled {
+    border-color: #d0d7de;
+    background-color: #f0f2f5;
+}
+QRadioButton::indicator:checked:disabled {
+    background-color: #b0b8c4;
+    border-color: #b0b8c4;
+}
+
+/*-------------下拉选择框（ComboBox）（由 DeepSeek 网页端提供）-------------*/
+
+QComboBox {
+    background-color: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #1c1c1c;
+    min-height: 20px;
+    max-height: 40px;
+    font-size: 10.5pt;
+    padding-right: 30px;   /* 为箭头留出空间 */
+}
+QComboBox:hover {
+    border-color: #a0b0c0;
+}
+QComboBox:pressed {
+    border-color: #8a9cb0;
+}
+QComboBox:focus {
+    border-color: #e0ecff;
+}
+QComboBox:disabled {
+    background-color: #f0f2f5;
+    color: #a0a0a0;
+    border-color: #d0d7de;
+}
+
+/* 下拉箭头（指示器） */
+QComboBox::drop-down {
+    border: none;                /* 去掉默认的边框 */
+    width: 30px;
+    background-color: transparent;
+    subcontrol-origin: padding;
+    subcontrol-position: right center;  /* 箭头居中 */
+}
+/* 下拉箭头：QSS 接管 drop-down 区域后原生三角不再绘制，
+   必须显式提供图片。图标由 resources.qrc 提供并经 pyside6-rcc 编译进 resources_rc.py */
+QComboBox::down-arrow {
+    image: url(:/icons/arrow_down);
+    margin-right: 6px;
+}
+
+/* 下拉列表（弹出视图） */
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    padding: 4px 0px;
+    outline: none;
+    /* 可选：添加阴影效果（但 QSS 不支持 box-shadow，可忽略） */
+}
+QComboBox QAbstractItemView::item {
+    padding: 4px 12px;
+    color: #1c1c1c;
+    background-color: transparent;
+}
+QComboBox QAbstractItemView::item:hover {
+    background-color: #e8f0fe;
+    color: #000000;
+}
+QComboBox QAbstractItemView::item:selected {
+    background-color: #d0e0f5;
+    color: #1c1c1c;
+}
+/* 禁用状态的项 */
+QComboBox QAbstractItemView::item:disabled {
+    color: #a0a0a0;
+}
+
+/*-------------进度条（ProgressBar）-------------*/
+QProgressBar {
+    background-color: #f0f2f5;
+    border: 1px solid #d0d7de;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #1c1c1c;
+    min-height: 20px;
+    max-height: 30px;
+    padding: 0px 4px;
+}
+QProgressBar::chunk {
+    background-color: #cfe1fc;
+    border-radius: 8px;
+    margin: 2px 0px;
+}
+
+/*-------------卡片（Card）-------------*/
+QFrame {
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #d0d7de;
+}
+
+/*-------------滚动区域（ScrollArea）（由 DeepSeek 网页版提供）-------------*/
+QScrollArea {
+    background-color: #f5f7fa;      /* 与 Window 内容区背景一致 */
+    border: 1px solid #d0d7de;      /* 与 LineEdit 边框一致 */
+    border-radius: 8px;             /* 与其它控件统一的圆角 */
+}
+
+/* 滚动区域内部的容器（让内容与边框保持一点距离，更美观） */
+QScrollArea > QWidget > QWidget {
+    background-color: transparent;  /* 保持透明，显示父级背景 */
+}
+
+/* ===== 滚动条（ScrollBar）通用样式 ===== */
+/* 滚动条的宽度/高度 */
+QScrollBar:vertical {
+    background: transparent;        /* 轨道背景透明 */
+    width: 8px;                    /* 垂直滚动条宽度，细条更现代[reference:13] */
+    margin: 2px 0px;               /* 上下留边距，避免与圆角重叠 */
+}
+QScrollBar:horizontal {
+    background: transparent;
+    height: 8px;
+    margin: 0px 2px;
+}
+
+/* 滚动条滑块（手柄） */
+QScrollBar::handle:vertical {
+    background: #c1c1c1;            /* 滑块颜色 */
+    border-radius: 4px;             /* 圆角滑块[reference:14] */
+    min-height: 20px;               /* 防止滑块太小 */
+}
+QScrollBar::handle:horizontal {
+    background: #c1c1c1;
+    border-radius: 4px;
+    min-width: 20px;
+}
+
+/* 滑块悬停效果 */
+QScrollBar::handle:vertical:hover,
+QScrollBar::handle:horizontal:hover {
+    background: #a0a0a0;            /* 悬停时变深色，提供反馈[reference:15] */
+}
+
+/* 滚动条两端按钮（上下箭头）——隐藏，现代 UI 通常不需要[reference:16] */
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    height: 0px;
+    width: 0px;
+    background: transparent;
+}
+
+/* 滚动条空白区域（滑块上下方）——透明 */
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical,
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
+}

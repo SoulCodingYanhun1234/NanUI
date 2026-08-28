@@ -1,0 +1,2 @@
+include NanUI/styles/*.qss
+include NanUI/resources/*.py

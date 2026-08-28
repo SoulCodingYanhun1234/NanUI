@@ -1,0 +1,10 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/icons">
+        <file alias="check">images/check-16x.png</file>
+        <file alias="circle">images/circle-16x.png</file>
+        <file alias="circle2">images/circle-32x.png</file>
+        <file alias="arrow_down">images/arrow-down.png</file>
+        <file alias="arrow_down_disabled">images/arrow-down-disabled.png</file>
+    </qresource>
+</RCC>
