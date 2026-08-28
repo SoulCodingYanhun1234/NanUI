@@ -20,16 +20,16 @@ class MainWindow(Window):
         self.cbbTest.addItems(['选项1', '选项2', '选项3'])
         self.pgBarTest = ProgressBar(value=90)
 
-        self.frameTest = Card(layout='H')
-        self.frameLbTest = Label('Frame 容器测试')
-        self.frameBtnTest = PushButton('Frame 容器测试')
-        self.frameTest.layout.addWidget(self.frameLbTest)
-        self.frameTest.layout.addWidget(self.frameBtnTest)
+        self.cardTest = Card(layout='H')
+        self.cardLbTest = Label('Card 容器测试')
+        self.cardBtnTest = PushButton('Card 容器测试')
+        self.cardTest.layout.addWidget(self.cardLbTest)
+        self.cardTest.layout.addWidget(self.cardBtnTest)
 
         self.saTest = ScrollArea()
         self.saLayout = QVBoxLayout()
-        for i in range(30):
-            self.saLayout.addWidget(PushButton(f'按钮{i+1}'))
+        for i in range(10):
+            self.saLayout.addWidget(PushButton(f'ScrollArea 容器测试{i+1}'))
         self.saLayout.addStretch()
         self.saTest.setContentLayout(self.saLayout)
 
@@ -46,7 +46,7 @@ class MainWindow(Window):
         self.mainLayout.addLayout(self.subLayout)
         self.mainLayout.addWidget(self.cbbTest)
         self.mainLayout.addWidget(self.pgBarTest)
-        self.mainLayout.addWidget(self.frameTest)
+        self.mainLayout.addWidget(self.cardBtnTest)
         self.mainLayout.addWidget(self.saTest)
 
         self.setLayout(self.mainLayout)
