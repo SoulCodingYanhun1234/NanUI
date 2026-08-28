@@ -42,7 +42,7 @@ pip install -e .
 你可以使用下面这段代码，来测试 NanUI 里的控件。
 
 ```py
-from NanUI import Window, Label, PushButton, LineEdit, TextEdit, CheckBox, RadioButton, ComboBox, ProgressBar, Card
+from NanUI import Window, Label, PushButton, LineEdit, TextEdit, CheckBox, RadioButton, ComboBox, ProgressBar, Card, ScrollArea
 from NanUI.utils.theme_manager import apply_theme
 from PySide6.QtWidgets import QApplication, QVBoxLayout, QHBoxLayout
 from NanUI.resources import resources_rc
@@ -70,6 +70,13 @@ class MainWindow(Window):
         self.frameTest.layout.addWidget(self.frameLbTest)
         self.frameTest.layout.addWidget(self.frameBtnTest)
 
+        self.saTest = ScrollArea()
+        self.saLayout = QVBoxLayout()
+        for i in range(30):
+            self.saLayout.addWidget(PushButton(f'按钮{i+1}'))
+        self.saLayout.addStretch()
+        self.saTest.setContentLayout(self.saLayout)
+
         self.subLayout = QHBoxLayout()
         self.subLayout.addWidget(self.cbTest)
         self.subLayout.addWidget(self.rbtnTest)
@@ -84,6 +91,7 @@ class MainWindow(Window):
         self.mainLayout.addWidget(self.cbbTest)
         self.mainLayout.addWidget(self.pgBarTest)
         self.mainLayout.addWidget(self.frameTest)
+        self.mainLayout.addWidget(self.saTest)
 
         self.setLayout(self.mainLayout)
 
