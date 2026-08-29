@@ -90,7 +90,7 @@ class MainWindow(Window):
         self.mainLayout.addLayout(self.subLayout)
         self.mainLayout.addWidget(self.cbbTest)
         self.mainLayout.addWidget(self.pgBarTest)
-        self.mainLayout.addWidget(self.cardBtnTest)
+        self.mainLayout.addWidget(self.cardTest)
         self.mainLayout.addWidget(self.saTest)
 
         self.setLayout(self.mainLayout)
