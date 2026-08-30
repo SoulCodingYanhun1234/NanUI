@@ -124,7 +124,7 @@ if __name__ == '__main__':
 NanUI 支持切换主题（虽然现在只内置了一个 light 主题 awa），你可以在启动时指定：
 
 ```py
-from NanUI.utils import apply_theme
+from NanUI.utils.theme_manager import apply_theme
 
 # 亮色主题（默认）
 apply_theme(app, "light")

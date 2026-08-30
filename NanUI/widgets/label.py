@@ -5,9 +5,9 @@ from NanUI.utils import get_font
 
 class Label(QLabel):
     """
-    按钮控件。
+    标签控件。
 
-    继承自 QPushButton。预设了圆角、悬停/按下/禁用样式，并可自定义字体和大小。
+    继承自 QLabel。预设了圆角样式，并可自定义字体和大小。
 
     Args:
         text (str): 按钮显示的初始文本。默认为空字符串。

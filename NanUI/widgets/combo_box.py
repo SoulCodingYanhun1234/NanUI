@@ -14,7 +14,7 @@ class ComboBox(QComboBox):
         font (str, optional): 字体族名称，若不传则使用全局默认。
         font_size (int): 字体大小（磅值），默认为 12。
         items (list[str], optional): 初始选项列表，默认为空。
-        read_ontly (bool): 是否只读，默认为 True
+        read_only (bool): 是否只读，默认为 True
     """
 
     def __init__(self, parent = None, font: str = None, font_size: int = 12, items: list = None, read_only: bool = True):
@@ -23,7 +23,7 @@ class ComboBox(QComboBox):
         self.setFont(get_font(size = font_size, family = font))
         self.setEditable(not read_only)
         if (items):
-            self.setItems(list)
+            self.setItems(items)
 
     def setItems(self, items: list = None):
         self.clear()
