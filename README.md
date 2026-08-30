@@ -6,11 +6,11 @@
 [![Python version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
 [![PySide6 version](https://img.shields.io/badge/PySide6-6.5.0%2B-blue)](https://doc.qt.io/qtforpython-6/)
 
-该UI库还处于早期开发阶段！
+该 UI 库还处于早期开发阶段！
 
 ## 简介
 
-NanUI 是一套基于 PySide6 的轻量级 UI 库，专为想要快速开发界面美观的 Windows 软件的人们提供。
+NanUI 是一套基于 PySide6 的轻量级 UI 库，专为想要快速开发出美观 Windows 软件界面的人而设计。
 它提供了一套最基础的控件的美化，你可以通过修改 styles 文件夹下的 QSS 文件或者添加主题来自定义窗口的样式。
 
 > 注：本项目部分代码由 DeepSeek 网页端和 TraeCode-cn 协助完成，项目源代码里所有由它们编写的文件/类/函数等均有提示。
@@ -23,7 +23,7 @@ NanUI 是一套基于 PySide6 的轻量级 UI 库，专为想要快速开发界�
 
 目前 NanUI 还没有上传到 PyPI，在命令行运行这行代码
 
-```base
+```bash
 pip install git+https://github.com/NanbeiTnT/NanUI.git
 ```
 
@@ -103,34 +103,42 @@ if __name__ == '__main__':
     app.exec()
 ```
 
-这段代码也可以在库的 tests 文件夹里找到。
+这段代码也可以在库的 tests 文件夹或者 examples 文件夹里找到。
 
 ## 已实现控件列表
 
-- **Window**: 无边框圆角窗口（可拖动/调整大小 ✅
-- **Label**: 圆角标签（透明背景/自适应字体） ✅
+- **Window**: 无边框圆角窗口（可拖动/调整大小） ✅
+- **Label**: 圆角标签（可自定义字体/字号） ✅
 - **PushButton**: 圆角按钮（悬停/按下/禁用状态） ✅
 - **LineEdit**: 单行输入框（圆角/焦点高亮） ✅
 - **TextEdit**: 多行文本框（自定义右键菜单） ✅
 - **CheckBox**: 复选框（自定义指示器图标） ✅
 - **RadioButton**: 单选按钮（实心圆点风格） ✅
 - **ComboBox**: 下拉选择框（圆角/自定义箭头） ✅
-- **ProgressBar**: 进度条（药丸风格渐变） ✅
+- **ProgressBar**: 进度条（药丸风格圆角） ✅
 - **Card**: 卡片（可容纳其他组件） ✅
 - **ScrollArea**: 滚动区域（可容纳其他组件） ✅
 
 ## 主题切换
 
-NanUI 支持切换主题（虽然现在只内置了一个 light 主题 awa），你可以在启动时指定：
+NanUI 支持切换主题，已经内置了浅色主题 light 和深色主题 dark，你可以在启动时指定：
 
 ```py
 from NanUI.utils.theme_manager import apply_theme
 
 # 亮色主题（默认）
 apply_theme(app, "light")
+# 暗色主题
+apply_theme(app, "dark")
 ```
 
 你也可以在 styles 文件夹里添加自己的 QSS 文件。
+不过有些需要注意的点：
+
+- 自绘控件（窗口底色/描边、标题栏三个按钮的颜色）不走 QSS，取色在 theme_manager.THEME_COLORS，新主题不登记会回落到 light 配色
+- window_bg 必须和该主题 QSS 里 QWidget#contentWidget 的底色一致，否则窗口四角露出色差
+- 主题 QSS 需要带 QPushButton#captionButton 规则，否则标题栏按钮普通态会露出全局 QPushButton 底色
+- apply_theme 找不到主题文件时会打印警告并返回 False
 
 ## 项目结构
 
@@ -140,10 +148,13 @@ NanUI/
 │   ├── widgets/            # 控件类
 │   ├── styles/             # QSS 样式表
 │   ├── utils/              # 工具函数（字体、主题管理）
-│   └── resources/          # 图片资源（可选）
+│   └── resources/          # 图片资源
 ├── tests/                  # 测试示例
+├── examples/               # 控件示例（一个控件一个文件）
 ├── setup.py                # 安装脚本
 ├── LICENSE                 # 许可证
+├── requirements.txt        # 依赖库
+├── MANIFEST.in
 └── README.md
 ```
 

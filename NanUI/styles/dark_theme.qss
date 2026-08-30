@@ -1,0 +1,487 @@
+/*
+ * ==================================================================
+ * NanUI 暗色主题 —— 中性石墨（Neutral Graphite）
+ * ==================================================================
+ *
+ * 设计原则
+ * --------
+ * 1) 海拔梯度（elevation）：深色界面靠"越靠前越亮"来分层，而不是靠阴影。
+ *    本主题用一条 7 级灰阶，每级之间亮度差约 #070708，肉眼可辨但不刺眼。
+ *
+ *      级别    色值        用途
+ *      ----    --------    --------------------------------
+ *      L0      #18181a     窗口内容区 / 滚动区域底
+ *      L1      #1f1f24     标题栏
+ *      L2      #26262b     卡片 / 菜单 / 下拉弹层
+ *      L3      #2b2b31     标签底
+ *      L4      #33333a     输入框 / 下拉框 / 按钮（静态）
+ *      L5      #3d3d45     悬停
+ *      L6      #484852     按下
+ *
+ * 2) 交互方向：深色下"变亮 = 拿起"，所以 hover / pressed 逐级提亮，
+ *    与亮色主题（逐级压暗）方向相反。这是 Material 等设计体系的通行做法。
+ *
+ * 3) 描边比所在的填充面亮一档，1px 就够，不要在深色里用粗描边。
+ *      border          #43434c    常规
+ *      border-strong   #5a5a66    悬停 / 聚焦
+ *      divider         #2e2e34    分隔线（比 L4 暗，用于切割同层内容）
+ *
+ * 4) 文字不用纯白。纯白在深底上会产生光晕（halation），长时间阅读累眼。
+ *      text-primary    #e8e8ec    对比度 ≈ 13.4 : 1
+ *      text-secondary  #a2a2ab    对比度 ≈  6.7 : 1
+ *      text-disabled   #63636e    禁用态，WCAG 对禁用元素不作要求
+ *
+ * 5) 强调色只用在"可点击 / 已选中"的地方，不要拿来铺背景。
+ *      accent          #7aa2f7
+ *      accent-hover    #8fb2fa
+ *      accent-pressed  #5c86e0
+ *      accent-soft     #24304a    选中项底色（低饱和，不抢眼）
+ *      danger          #e0665c    关闭按钮悬停
+ *      danger-pressed  #bf4d45
+ *
+ * 维护提示
+ * --------
+ * - 自绘控件（Window 圆角 / CaptionButton 图标）不走 QSS，
+ *   颜色在 utils/theme_manager.py 的 THEME_COLORS["dark"] 里，改这里要同步改。
+ * - 类型选择器没有"子类优先"：QLabel 继承自 QFrame，两者权重相同，
+ *   谁写在后面谁生效。所以卡片一律用 QFrame#card（ID 选择器，权重更高），
+ *   绝不能写回裸 QFrame。
+ * ==================================================================
+ */
+
+/*-------------标签（Label）-------------*/
+
+QLabel {
+    color: #e8e8ec;
+    background-color: #33333a;      /* L4，与按钮/输入框同级；比卡片 L2 亮两档，放进卡片里明显可见 */
+    border-radius: 8px;
+    padding: 6px 12px;
+    border: none;
+    min-height: 20px;
+    max-height: 50px;
+    height: 30px;
+    font-weight: normal;
+}
+
+/*-------------窗口（Window）-------------*/
+
+/* 标题栏（正常状态） */
+QWidget#titleBar {
+    background-color: #1f1f24;      /* L1 */
+    border-top-left-radius: 12px;   /* 与 Window(radius=12) 默认一致，运行时由代码按实际 radius 覆盖 */
+    border-top-right-radius: 12px;
+}
+/* 标题栏内的标题文字：背景透明，不受全局 QLabel 背景影响 */
+QLabel#titleLabel {
+    background: transparent;
+    color: #e8e8ec;
+    border: none;
+}
+/* 内容区域（正常状态） */
+QWidget#contentWidget {
+    background-color: #18181a;      /* L0 */
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* 标题栏按钮（Window 内置，objectName = captionButton）
+   按钮外观由 paintEvent 自绘、颜色取自 theme_manager 的 THEME_COLORS，
+   这里只压掉全局 QPushButton 的 padding / min-height，防止撑坏 30x30 的按钮尺寸。
+   缺了这条，普通态按钮会露出全局 QPushButton 的底色。 */
+QPushButton#captionButton {
+    padding: 0;
+    min-height: 0;
+    max-height: none;
+    border: none;
+    background: transparent;
+}
+
+/*
+ * 窗口最大化时由 _update_appearance() -> _apply_corner_style() 动态覆盖，
+ * 给标题栏和内容区各写一条只含 border-radius 的样式，抹平四角；
+ * 恢复时按 Window 的 radius 参数写回对应圆角。
+ * 这两行注释里的旧色值（#ecf0f1 / #f5f7fa）属于亮色主题，已移除。
+ */
+
+/*-------------按钮（PushButton）-------------*/
+
+QPushButton {
+    background-color: #33333a;      /* L4 */
+    border: 1px solid #43434c;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #e8e8ec;
+    min-height: 20px;
+    max-height: 50px;
+    height: 30px;
+    font-weight: normal;
+}
+QPushButton:hover {
+    background-color: #3d3d45;      /* L5，提亮 */
+    border-color: #5a5a66;
+}
+QPushButton:pressed {
+    background-color: #484852;      /* L6，再提亮 */
+    border-color: #6b6b78;
+}
+QPushButton:disabled {
+    /* 禁用要"沉下去"：底色压到 L0 与 L1 之间，文字降到 text-disabled。
+       绝不能沿用亮色主题的 #e0e0e0，那会让禁用按钮比正常按钮还亮。 */
+    background-color: #232328;
+    border-color: #2e2e34;
+    color: #63636e;
+}
+
+/*-------------单行输入框（LineEdit）-------------*/
+
+QLineEdit {
+    background-color: #33333a;      /* L4，比窗口底亮，形成"可输入"的暗示 */
+    border: 1px solid #43434c;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #e8e8ec;
+    min-height: 20px;
+    max-height: 40px;
+    font-size: 14px;
+    selection-background-color: #2d3a55;
+    selection-color: #e8e8ec;
+}
+QLineEdit:hover {
+    border-color: #5a5a66;
+}
+QLineEdit:focus {
+    border-color: #7aa2f7;          /* 聚焦用强调色，全界面唯一提示"光标在这" */
+    background-color: #36363e;
+}
+QLineEdit:disabled {
+    background-color: #232328;
+    border-color: #2e2e34;
+    color: #63636e;
+}
+/* 注：Qt 的 QSS 并不支持 ::placeholder 伪元素，占位文字的颜色由
+   theme_manager.apply_theme() 通过 QPalette.PlaceholderText 设置。 */
+QLineEdit::placeholder {
+    color: #a2a2ab;
+}
+
+/*-------------菜单（QMenu）-------------*/
+
+QMenu {
+    background-color: #26262b;      /* L2 */
+    border: 1px solid #43434c;
+    border-radius: 8px;
+    padding: 6px 0px;
+}
+QMenu::item {
+    padding: 6px 24px;
+    color: #e8e8ec;
+    background-color: transparent;
+}
+QMenu::item:selected {
+    background-color: #33333a;      /* L5，悬停/键盘高亮 */
+    color: #e8e8ec;
+}
+QMenu::item:pressed {
+    background-color: #484852;      /* L6 */
+}
+QMenu::separator {
+    height: 1px;
+    background: #2e2e34;            /* divider */
+    margin: 4px 12px;
+}
+QMenu::icon {
+    width: 0px;
+}
+
+/*-------------多行文本框（TextEdit）-------------*/
+
+QTextEdit {
+    background-color: #33333a;      /* L4 */
+    border: 1px solid #43434c;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #e8e8ec;
+    font-size: 14px;
+    min-height: 60px;
+    selection-background-color: #2d3a55;
+    selection-color: #e8e8ec;
+}
+QTextEdit:hover {
+    border-color: #5a5a66;
+}
+QTextEdit:focus {
+    border-color: #7aa2f7;
+    background-color: #36363e;
+}
+QTextEdit::selection {
+    background-color: #2d3a55;
+    color: #e8e8ec;
+}
+
+/*-------------复选框（CheckBox）-------------*/
+
+QCheckBox {
+    background-color: transparent;
+    color: #e8e8ec;
+    font-size: 14px;
+    spacing: 8px;          /* 文本与指示器之间的间距 */
+    padding: 4px 0px;
+}
+
+/* 指示器（方框） */
+QCheckBox::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 2px solid #5a5a66;      /* border-strong：2px 细边在深色里要够亮才看得见 */
+    background-color: transparent;
+}
+QCheckBox::indicator:hover {
+    border-color: #8fb2fa;
+    background-color: #2b2b31;
+}
+QCheckBox::indicator:pressed {
+    border-color: #5c86e0;
+    background-color: #33333a;
+}
+
+/* 选中状态 */
+QCheckBox::indicator:checked {
+    background-color: transparent;
+    border-color: #7aa2f7;
+    image: url(:/icons/check-dark);  /* 白色对勾，见 resources/images/check-16x-dark.png */
+}
+
+QCheckBox::indicator:checked:hover {
+    border-color: #8fb2fa;
+    background-color: #24304a;
+}
+QCheckBox::indicator:checked:pressed {
+    border-color: #5c86e0;
+    background-color: #2d3a55;
+}
+
+/* 禁用状态 */
+QCheckBox:disabled {
+    color: #63636e;
+}
+QCheckBox::indicator:disabled {
+    border-color: #3a3a42;
+    background-color: #232328;
+}
+QCheckBox::indicator:checked:disabled {
+    border-color: #3a3a42;
+    background-color: #33333a;
+    image: url(:/icons/check-dark);
+}
+
+/*-------------单选按钮（RadioButton）-------------*/
+
+QRadioButton {
+    background-color: transparent;
+    color: #e8e8ec;
+    font-size: 14px;
+    spacing: 8px;
+    padding: 4px 0px;
+}
+QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 9px;
+    border: 2px solid #5a5a66;
+    background-color: transparent;
+}
+QRadioButton::indicator:hover {
+    border-color: #8fb2fa;
+}
+QRadioButton::indicator:pressed {
+    border-color: #5c86e0;
+}
+QRadioButton::indicator:checked {
+    background-color: #7aa2f7;
+    border-color: #7aa2f7;
+}
+QRadioButton::indicator:checked:hover {
+    background-color: #8fb2fa;
+    border-color: #8fb2fa;
+}
+QRadioButton::indicator:checked:pressed {
+    background-color: #5c86e0;
+    border-color: #5c86e0;
+}
+QRadioButton:disabled {
+    color: #63636e;
+}
+QRadioButton::indicator:disabled {
+    border-color: #3a3a42;
+    background-color: #232328;
+}
+QRadioButton::indicator:checked:disabled {
+    background-color: #3a3a42;
+    border-color: #3a3a42;
+}
+
+/*-------------下拉选择框（ComboBox）-------------*/
+
+QComboBox {
+    background-color: #33333a;      /* L4 */
+    border: 1px solid #43434c;
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #e8e8ec;
+    min-height: 20px;
+    max-height: 40px;
+    font-size: 10.5pt;
+    padding-right: 30px;   /* 为箭头留出空间 */
+}
+QComboBox:hover {
+    background-color: #3d3d45;      /* L5 */
+    border-color: #5a5a66;
+}
+QComboBox:pressed {
+    background-color: #484852;      /* L6 */
+    border-color: #6b6b78;
+}
+QComboBox:focus {
+    border-color: #7aa2f7;
+}
+QComboBox:disabled {
+    background-color: #232328;
+    color: #63636e;
+    border-color: #2e2e34;
+}
+
+/* 下拉箭头（指示器） */
+QComboBox::drop-down {
+    border: none;                /* 去掉默认的边框 */
+    width: 30px;
+    background-color: transparent;
+    subcontrol-origin: padding;
+    subcontrol-position: right center;  /* 箭头居中 */
+}
+/* 下拉箭头：QSS 接管 drop-down 区域后原生三角不再绘制，必须显式提供图片。
+   注意！原生 arrow_down.png 是 #1c1c1c 近黑色，在深色底上完全不可见，
+   所以这里必须用专为暗色着色的 arrow_down_dark（#a2a2ab）。 */
+QComboBox::down-arrow {
+    image: url(:/icons/arrow_down_dark);
+    margin-right: 6px;
+}
+QComboBox::down-arrow:disabled {
+    image: url(:/icons/arrow_down_dark_disabled);
+}
+
+/* 下拉列表（弹出视图） */
+QComboBox QAbstractItemView {
+    background-color: #26262b;      /* L2，弹层比输入框低一档，像"浮起来" */
+    border: 1px solid #43434c;
+    border-radius: 8px;
+    padding: 4px 0px;
+    outline: none;
+}
+QComboBox QAbstractItemView::item {
+    padding: 4px 12px;
+    color: #e8e8ec;
+    background-color: transparent;
+}
+QComboBox QAbstractItemView::item:hover {
+    background-color: #33333a;      /* L5 */
+    color: #e8e8ec;
+}
+QComboBox QAbstractItemView::item:selected {
+    background-color: #24304a;      /* accent-soft：标示当前选中项 */
+    color: #e8e8ec;
+}
+/* 禁用状态的项 */
+QComboBox QAbstractItemView::item:disabled {
+    color: #63636e;
+}
+
+/*-------------进度条（ProgressBar）-------------*/
+
+QProgressBar {
+    background-color: #33333a;      /* L4 轨道 */
+    border: 1px solid #43434c;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #e8e8ec;
+    min-height: 20px;
+    max-height: 30px;
+    padding: 0px 4px;
+}
+QProgressBar::chunk {
+    background-color: #7aa2f7;      /* accent */
+    border-radius: 8px;
+    margin: 2px 0px;
+}
+
+/*-------------卡片（Card）-------------*/
+
+/* 必须用 QFrame#card：裸 QFrame 与 QLabel 权重相同，写在后面会反过来盖掉 QLabel */
+QFrame#card {
+    background-color: #26262b;      /* L2 */
+    border-radius: 8px;
+    border: 1px solid #43434c;
+}
+
+/*-------------滚动区域（ScrollArea）-------------*/
+
+QScrollArea {
+    background-color: #18181a;      /* L0，与 Window 内容区背景一致 */
+    border: 1px solid #43434c;
+    border-radius: 8px;
+}
+
+/* 滚动区域内部的容器（让内容与边框保持一点距离，更美观） */
+QScrollArea > QWidget > QWidget {
+    background-color: transparent;  /* 保持透明，显示父级背景 */
+}
+
+/* ===== 滚动条（ScrollBar）通用样式 ===== */
+/* 滚动条的宽度/高度 */
+QScrollBar:vertical {
+    background: transparent;        /* 轨道背景透明 */
+    width: 8px;                    /* 垂直滚动条宽度，细条更现代 */
+    margin: 2px 0px;               /* 上下留边距，避免与圆角重叠 */
+}
+QScrollBar:horizontal {
+    background: transparent;
+    height: 8px;
+    margin: 0px 2px;
+}
+
+/* 滚动条滑块（手柄） */
+QScrollBar::handle:vertical {
+    background: #43434c;            /* border 档，在 L0 底上刚好可见 */
+    border-radius: 4px;
+    min-height: 20px;               /* 防止滑块太小 */
+}
+QScrollBar::handle:horizontal {
+    background: #43434c;
+    border-radius: 4px;
+    min-width: 20px;
+}
+
+/* 滑块悬停效果 */
+QScrollBar::handle:vertical:hover,
+QScrollBar::handle:horizontal:hover {
+    background: #5a5a66;            /* 悬停提亮，提供反馈 */
+}
+
+/* 滚动条两端按钮（上下箭头）——隐藏，现代 UI 通常不需要 */
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    height: 0px;
+    width: 0px;
+    background: transparent;
+}
+
+/* 滚动条空白区域（滑块上下方）——透明 */
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical,
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: transparent;
+}

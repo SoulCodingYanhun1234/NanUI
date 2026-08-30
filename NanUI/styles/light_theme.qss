@@ -2,7 +2,7 @@
 
 QLabel {
     color: #000000;
-    background: #ecf0f1;
+    background-color: #ecf0f1;
     border-radius: 8px;
     padding: 6px 12px;
     border: none;
@@ -16,8 +16,8 @@ QLabel {
 /* 标题栏（正常状态） */
 QWidget#titleBar {
     background-color: #ecf0f1;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-top-left-radius: 12px;   /* 与 Window(radius=12) 默认一致，运行时由代码按实际 radius 覆盖 */
+    border-top-right-radius: 12px;
 }
 /* 标题栏内的标题文字：背景透明，不受全局 QLabel 背景影响 */
 QLabel#titleLabel {
@@ -27,15 +27,25 @@ QLabel#titleLabel {
 /* 内容区域（正常状态） */
 QWidget#contentWidget {
     background-color: #f5f7fa;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+/* 标题栏按钮（Window 内置，objectName = captionButton）
+   按钮外观由 paintEvent 自绘、颜色取自 theme_manager 的 THEME_COLORS，
+   这里只压掉全局 QPushButton 的 padding / min-height，防止撑坏 30x30 的按钮尺寸。 */
+QPushButton#captionButton {
+    padding: 0;
+    min-height: 0;
+    max-height: none;
+    border: none;
+    background: transparent;
 }
 
 /*
- * 窗口最大化时由 _update_appearance() 动态覆盖，去掉 border-radius：
- *   QWidget#titleBar { background-color: #ecf0f1; }
- *   QWidget#contentWidget { background-color: #f5f7fa; }
- * 恢复时重新设回上面的圆角样式（radius 取自 self._original_radius）。
+ * 窗口最大化时由 _update_appearance() -> _apply_corner_style() 动态覆盖，
+ * 给标题栏和内容区各加一条只含 border-radius: 0 的样式，抹平四角；
+ * 恢复时清空这两条内联样式，圆角重新交回上面 / 主题 QSS 的设定。
  */
 
 /*-------------按钮（PushButton）-------------*/
@@ -55,7 +65,7 @@ QPushButton:hover {
     background-color: #e0ecff;
 }
 QPushButton:pressed {
-    background-color: #e8f0fe;
+    background-color: #cfe0f8;      /* 原先写的是 #e8f0fe，与普通态同色，按下毫无反馈 */
 }
 QPushButton:disabled {
     background-color: #e0e0e0;
@@ -128,55 +138,6 @@ QTextEdit:focus {
 QTextEdit::selection {
     background-color: #e0ecff;
     color: #1c1c1c;
-}
-
-/*-------------滚动条（QScrollBar）（由 DeepSeek 网页版提供）-------------*/
-
-QScrollBar:vertical {
-    background-color: #f0f2f5;
-    width: 12px;
-    border-radius: 6px;
-    margin: 4px 2px 4px 2px;
-}
-QScrollBar::handle:vertical {
-    background-color: #d0d7de;
-    border-radius: 6px;
-    min-height: 20px;
-}
-QScrollBar::handle:vertical:hover {
-    background-color: #b0b8c4;
-}
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical {
-    height: 0px;
-    background: transparent;
-}
-QScrollBar::add-page:vertical,
-QScrollBar::sub-page:vertical {
-    background: transparent;
-}
-QScrollBar:horizontal {
-    background-color: #f0f2f5;
-    height: 12px;
-    border-radius: 6px;
-    margin: 2px 4px 2px 4px;
-}
-QScrollBar::handle:horizontal {
-    background-color: #d0d7de;
-    border-radius: 6px;
-    min-width: 20px;
-}
-QScrollBar::handle:horizontal:hover {
-    background-color: #b0b8c4;
-}
-QScrollBar::add-line:horizontal,
-QScrollBar::sub-line:horizontal {
-    width: 0px;
-    background: transparent;
-}
-QScrollBar::add-page:horizontal,
-QScrollBar::sub-page:horizontal {
-    background: transparent;
 }
 
 /*-------------复选框（CheckBox）（由 DeepSeek 网页版提供）-------------*/
@@ -368,7 +329,7 @@ QProgressBar::chunk {
 }
 
 /*-------------卡片（Card）-------------*/
-QFrame {
+QFrame#card {
     background-color: #ffffff;
     border-radius: 8px;
     border: 1px solid #d0d7de;

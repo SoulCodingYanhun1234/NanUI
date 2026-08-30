@@ -6,6 +6,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QHBoxLayout, QVBoxLa
 from PySide6.QtCore import Qt, QPoint, QPointF, QRectF, QEvent, QSize
 from PySide6.QtGui import QPainter, QPainterPath, QColor, QPen, QFont
 from NanUI.utils import get_font
+from NanUI.utils.theme_manager import get_color
 
 
 class CaptionButton(QPushButton):
@@ -17,8 +18,10 @@ class CaptionButton(QPushButton):
         super().__init__(parent)
         self._icon_type = icon_type
         self.setFixedSize(30, 30)
-        # 覆盖全局 QPushButton QSS，防止 padding/min-height 撑大尺寸
-        self.setStyleSheet("padding: 0; min-height: 0; border: none; background: transparent;")
+        # 尺寸相关的修正放在主题的 QSS 里（QPushButton#captionButton），
+        # 不再用内联样式表，否则会挡住 app 级 QSS、用户改不动。
+        # 按钮外观本身由下面的 paintEvent 自绘，颜色取自当前主题。
+        self.setObjectName("captionButton")
 
     def set_icon_type(self, icon_type: str):
         self._icon_type = icon_type
@@ -41,18 +44,19 @@ class CaptionButton(QPushButton):
         is_close = (self._icon_type == "close")
 
         # ---------- 背景色 ----------
+        # 自绘内容不经过 QSS，颜色统一从主题配色表取
         if is_pressed:
-            bg = QColor("#c0392b") if is_close else QColor("#bdc3c7")
+            bg = QColor(get_color("caption_close_pressed" if is_close else "caption_pressed"))
         elif is_hover:
-            bg = QColor("#e74c3c") if is_close else QColor("#d5d8dd")
+            bg = QColor(get_color("caption_close_hover" if is_close else "caption_hover"))
         else:
             bg = QColor("transparent")
 
         # ---------- 图标色 ----------
         if (is_hover or is_pressed) and is_close:
-            fg = QColor("#ffffff")
+            fg = QColor(get_color("caption_fg_active"))
         else:
-            fg = QColor("#2c3e50")
+            fg = QColor(get_color("caption_fg"))
 
         # 画背景（圆角）
         painter.setBrush(bg)
@@ -183,6 +187,9 @@ class Window(QWidget):
 
         # ---------- 保存窗口最大化前的几何（用于恢复） ----------
         self._normal_geometry = None
+
+        # 记录"去圆角"是否已应用到标题栏/内容区，避免 resize 时反复重设样式表
+        self._squared_corners = None
 
     # ---------- 设置窗口标题 ----------
     def setTitle(self, title: str):
@@ -374,8 +381,8 @@ class Window(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         path = QPainterPath()
         path.addRoundedRect(QRectF(self.rect()), self._radius, self._radius)
-        painter.fillPath(path, QColor("#f5f7fa"))
-        painter.setPen(QPen(QColor("#d0d7de"), 1))
+        painter.fillPath(path, QColor(get_color("window_bg")))
+        painter.setPen(QPen(QColor(get_color("window_border")), 1))
         painter.drawPath(path)
 
     # ---------- 窗口状态变化（最大化/恢复时切换圆角） ----------
@@ -393,6 +400,41 @@ class Window(QWidget):
             self._radius = 0
         else:
             self._radius = self._original_radius
+
+        # 光把窗口自己的圆角清零还不够：标题栏和内容区的背景是 QSS 画的，
+        # 它们各自带着 8px 圆角，会在四角戳出直角缺口。
+        # 最大化时必须连它们一起抹平，恢复时再交还给主题 QSS。
+        if self._squared_corners != self.isMaximized():
+            self._squared_corners = self.isMaximized()
+            self._apply_corner_style(self._squared_corners)
+
+    def _apply_corner_style(self, squared: bool):
+        """
+        给标题栏和内容区设定圆角，使其与窗口自身的圆角一致。
+
+        这里只写圆角属性，不碰背景色——Qt 的样式表是逐属性覆盖的，
+        控件级规则不会吃掉 app 级 QSS 提供的背景色。
+
+        圆角值取自 self._radius，不再由 QSS 写死。之前主题 QSS 里写的是 8px，
+        而窗口默认 radius 是 12，子控件圆角比窗口小就会在四角戳出直角缺口。
+        改成动态取值后，无论 Window(radius=?) 传多少都能自动对齐。
+
+        Args:
+            squared(bool): True 表示最大化，抹平圆角；False 表示用当前窗口圆角。
+        """
+        r = 0 if squared else self._radius
+        self.title_bar.setStyleSheet(
+            "QWidget#titleBar {"
+            f" border-top-left-radius: {r}px;"
+            f" border-top-right-radius: {r}px;"
+            " }"
+        )
+        self.content_widget.setStyleSheet(
+            "QWidget#contentWidget {"
+            f" border-bottom-left-radius: {r}px;"
+            f" border-bottom-right-radius: {r}px;"
+            " }"
+        )
 
     # ---------- 窗口显示时更新外观与按钮图标 ----------
     def showEvent(self, event):

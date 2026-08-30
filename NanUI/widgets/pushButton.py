@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import QPushButton, QGraphicsDropShadowEffect
+from PySide6.QtWidgets import QPushButton
 from NanUI.utils import get_font
-from PySide6.QtCore import Qt
+from NanUI.utils.theme_manager import apply_themed_shadow
 
 class PushButton(QPushButton):
     """
@@ -13,6 +13,8 @@ class PushButton(QPushButton):
         parent (QWidget, optional): 父控件对象。默认为 None。
         font (str): 按钮文本的字体。默认为微软雅黑。
         font_size (int): 按钮文本的大小。默认为 12 (px)。
+        shadow (bool): 是否添加投影。默认为 True。投影颜色随主题变化，
+            取值见 theme_manager.THEME_COLORS 里的 "shadow" 键。
     """
 
     def __init__(self, text: str = '', parent = None, font: str = None, font_size: int = 12, shadow: bool = True):
@@ -28,11 +30,9 @@ class PushButton(QPushButton):
 
     def _add_shadow(self):
         """
-        为按钮添加阴影。
-        此方法代码由 DeepSeek 网页版提供。
+        为按钮添加投影。
+
+        颜色交给 theme_manager.apply_themed_shadow()，随主题切换自动更新：
+        浅色主题是 #a0a0a4，深色主题是 #000000（深色下投影要压得比所在面更暗）。
         """
-        shadow = QGraphicsDropShadowEffect(self)
-        shadow.setBlurRadius(8)
-        shadow.setOffset(0, 1)
-        shadow.setColor(Qt.gray)
-        self.setGraphicsEffect(shadow)
+        apply_themed_shadow(self)

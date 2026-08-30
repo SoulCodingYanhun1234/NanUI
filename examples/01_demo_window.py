@@ -15,6 +15,7 @@ class MainWindow(Window):
 if __name__ == '__main__':
     app = QApplication([])
     apply_theme(app, 'light')  # 设置主题，不加这行代码 QSS 不生效
+    # apply_theme(app, 'dark')  # 如果想要设置成深色模式，可以换成这行代码
     window = MainWindow()
     window.show()
     app.exec()

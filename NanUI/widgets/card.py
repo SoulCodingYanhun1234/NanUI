@@ -13,6 +13,7 @@ class Card(QFrame):
     def __init__(self, parent = None, layout: str = 'V'):
         super().__init__(parent)
         self.layout_ = layout
+        self.setObjectName('card')
 
         if (self.layout_ == 'V'):
             self.layout = QVBoxLayout(self)

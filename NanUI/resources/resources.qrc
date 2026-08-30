@@ -6,5 +6,8 @@
         <file alias="circle2">images/circle-32x.png</file>
         <file alias="arrow_down">images/arrow-down.png</file>
         <file alias="arrow_down_disabled">images/arrow-down-disabled.png</file>
+        <file alias="arrow_down_dark">images/arrow-down-dark.png</file>
+        <file alias="arrow_down_dark_disabled">images/arrow-down-dark-disabled.png</file>
+        <file alias="check-dark">images/check-16x-dark.png</file>
     </qresource>
 </RCC>
