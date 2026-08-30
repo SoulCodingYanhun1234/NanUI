@@ -1,3 +1,7 @@
+"""
+演示所有 NanUI 支持的控件。
+"""
+
 from NanUI import Window, Label, PushButton, LineEdit, TextEdit, CheckBox, RadioButton, ComboBox, ProgressBar, Card, ScrollArea
 from NanUI.utils.theme_manager import apply_theme
 from PySide6.QtWidgets import QApplication, QVBoxLayout, QHBoxLayout
