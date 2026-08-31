@@ -1,5 +1,9 @@
-from PySide6.QtWidgets import QComboBox
+from typing import List, Optional
+
 from NanUI.utils import get_font
+
+from PySide6.QtWidgets import QComboBox, QWidget
+
 
 class ComboBox(QComboBox):
     """
@@ -17,14 +21,21 @@ class ComboBox(QComboBox):
         read_only (bool): 是否只读（不可手动输入）。默认为 True。
     """
 
-    def __init__(self, parent = None, font: str = None, font_size: int = 12, items: list = None, read_only: bool = True):
-        super().__init__(parent = parent)
+    def __init__(
+        self,
+        parent: Optional[QWidget] = None,
+        font: Optional[str] = None,
+        font_size: int = 12,
+        items: Optional[List[str]] = None,
+        read_only: bool = True,
+    ) -> None:
+        super().__init__(parent=parent)
 
-        self.setFont(get_font(size = font_size, family = font))
+        self.setFont(get_font(size=font_size, family=font))
         self.setEditable(not read_only)
-        if (items):
+        if items:
             self.setItems(items)
 
-    def setItems(self, items: list = None):
+    def setItems(self, items: List[str]) -> None:
         self.clear()
         self.addItems(items)

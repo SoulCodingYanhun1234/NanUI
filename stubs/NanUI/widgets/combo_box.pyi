@@ -1,0 +1,6 @@
+from NanUI.utils import get_font as get_font
+from PySide6.QtWidgets import QComboBox, QWidget
+
+class ComboBox(QComboBox):
+    def __init__(self, parent: QWidget | None = None, font: str | None = None, font_size: int = 12, items: list[str] | None = None, read_only: bool = True) -> None: ...
+    def setItems(self, items: list[str]) -> None: ...

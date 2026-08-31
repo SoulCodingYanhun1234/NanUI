@@ -1,6 +1,10 @@
-from PySide6.QtWidgets import QPushButton
+from typing import Optional
+
 from NanUI.utils import get_font
 from NanUI.utils.theme_manager import apply_themed_shadow
+
+from PySide6.QtWidgets import QPushButton, QWidget
+
 
 class PushButton(QPushButton):
     """
@@ -17,7 +21,14 @@ class PushButton(QPushButton):
             取值见 theme_manager.THEME_COLORS 里的 "shadow" 键。
     """
 
-    def __init__(self, text: str = '', parent = None, font: str = None, font_size: int = 12, shadow: bool = True):
+    def __init__(
+        self,
+        text: str = "",
+        parent: Optional[QWidget] = None,
+        font: Optional[str] = None,
+        font_size: int = 12,
+        shadow: bool = True,
+    ) -> None:
         super().__init__(text, parent)
 
         self.font_, self.font_size = font, font_size
@@ -28,7 +39,7 @@ class PushButton(QPushButton):
         if shadow:
             self._add_shadow()
 
-    def _add_shadow(self):
+    def _add_shadow(self) -> None:
         """
         为按钮添加投影。
 

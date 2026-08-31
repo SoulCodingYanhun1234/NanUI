@@ -1,0 +1,3 @@
+from PySide6.QtWidgets import QWidget
+
+def center_window(window: QWidget) -> None: ...

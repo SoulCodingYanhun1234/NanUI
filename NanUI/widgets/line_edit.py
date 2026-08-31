@@ -1,7 +1,11 @@
-from PySide6.QtWidgets import QApplication, QLineEdit, QMenu
+from typing import Optional
+
 from NanUI.utils import get_font
-from PySide6.QtCore import Qt, QPoint
-from PySide6.QtGui import QAction, QKeySequence
+
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QAction, QContextMenuEvent, QKeySequence
+from PySide6.QtWidgets import QApplication, QLineEdit, QMenu, QWidget
+
 
 class LineEdit(QLineEdit):
     """
@@ -17,7 +21,15 @@ class LineEdit(QLineEdit):
         font_size (int): 字体大小（磅值）。默认为 14。
         placeholder (str): 框内没有文本时显示的提示文本。默认为空字符串。
     """
-    def __init__(self, text: str = '', parent = None, font: str = None, font_size: int = 14, placeholder: str = ''):
+
+    def __init__(
+        self,
+        text: str = "",
+        parent: Optional[QWidget] = None,
+        font: Optional[str] = None,
+        font_size: int = 14,
+        placeholder: str = "",
+    ) -> None:
         super().__init__(text, parent)
 
         self.setFont(get_font(size=font_size, family=font))
@@ -26,53 +38,53 @@ class LineEdit(QLineEdit):
 
         self.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
 
-    def contextMenuEvent(self, event):
+    def contextMenuEvent(self, event: QContextMenuEvent) -> None:
         menu = QMenu(self)
 
         # ---- 撤回 ----
-        acUndo = QAction('撤回', self)
+        acUndo = QAction("撤回", self)
         acUndo.triggered.connect(self.undo)
         acUndo.setEnabled(self.isUndoAvailable())
-        acUndo.setShortcut(QKeySequence.Undo)
+        acUndo.setShortcut(QKeySequence.StandardKey.Undo)
 
         # ---- 重做 ----
-        acRedo = QAction('重做', self)
+        acRedo = QAction("重做", self)
         acRedo.triggered.connect(self.redo)
         acRedo.setEnabled(self.isRedoAvailable())
-        acRedo.setShortcut(QKeySequence.Redo)
+        acRedo.setShortcut(QKeySequence.StandardKey.Redo)
 
         # ---- 剪切 ----
-        acCut = QAction('剪切', self)
+        acCut = QAction("剪切", self)
         acCut.triggered.connect(self.cut)
         acCut.setEnabled(self.hasSelectedText())
-        acCut.setShortcut(QKeySequence.Cut)
+        acCut.setShortcut(QKeySequence.StandardKey.Cut)
 
         # ---- 复制 ----
-        acCopy = QAction('复制', self)
+        acCopy = QAction("复制", self)
         acCopy.triggered.connect(self.copy)
         acCopy.setEnabled(self.hasSelectedText())
-        acCopy.setShortcut(QKeySequence.Copy)
+        acCopy.setShortcut(QKeySequence.StandardKey.Copy)
 
         # ---- 粘贴 ----
-        acPaste = QAction('粘贴', self)
+        acPaste = QAction("粘贴", self)
         acPaste.triggered.connect(self.paste)
         clipboard = QApplication.clipboard()
         acPaste.setEnabled(bool(clipboard.text()))
-        acPaste.setShortcut(QKeySequence.Paste)
+        acPaste.setShortcut(QKeySequence.StandardKey.Paste)
 
         # ---- 删除 ----
-        acDelete = QAction('删除', self)
+        acDelete = QAction("删除", self)
         acDelete.triggered.connect(self._delete_action)
         acDelete.setEnabled(self.hasSelectedText())
 
         # ---- 全选 ----
-        acSelectAll = QAction('全选', self)
+        acSelectAll = QAction("全选", self)
         acSelectAll.triggered.connect(self.selectAll)
         acSelectAll.setEnabled(True)
-        acSelectAll.setShortcut(QKeySequence.SelectAll)
+        acSelectAll.setShortcut(QKeySequence.StandardKey.SelectAll)
 
         # ---- 清空 ----
-        acClear = QAction('清空', self)
+        acClear = QAction("清空", self)
         acClear.triggered.connect(self.clear)
         acClear.setEnabled(bool(self.text()))
 
@@ -91,10 +103,9 @@ class LineEdit(QLineEdit):
         menu.exec(event.globalPos())
 
     # ---------- 槽 ----------
-    def _delete_action(self):
+    def _delete_action(self) -> None:
         """删除选中的文本（如果没有选中则删除光标后一个字符，但 LineEdit 通常只删除选中）"""
         if self.hasSelectedText():
-            cursor_pos = self.cursorPosition()
             start = self.selectionStart()
             end = start + len(self.selectedText())
             self.setText(self.text()[:start] + self.text()[end:])

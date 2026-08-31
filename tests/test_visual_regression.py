@@ -46,23 +46,32 @@
 import sys
 from pathlib import Path
 
-import pytest
-from PySide6.QtCore import Qt, QRect, QPoint
-from PySide6.QtGui import QImage, QColor, QPalette
-from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel
-
 from NanUI import (
-    Window, Label, PushButton, LineEdit, TextEdit,
-    CheckBox, RadioButton, ComboBox, ProgressBar, Card, ScrollArea,
+    Card,
+    CheckBox,
+    ComboBox,
+    Label,
+    LineEdit,
+    ProgressBar,
+    PushButton,
+    RadioButton,
+    ScrollArea,
+    TextEdit,
+    Window,
 )
 from NanUI.utils.theme_manager import apply_theme
+
+import pytest
+from PySide6.QtCore import QRect, Qt
+from PySide6.QtGui import QColor, QImage, QPalette
+from PySide6.QtTest import QTest
+from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
 
 # ---------- 路径与阈值 ----------
 
 BASELINE_DIR = Path(__file__).parent / "baselines"
 DIFF_DIR = BASELINE_DIR / "_diffs"
-PLATFORM = sys.platform          # win32 / linux / darwin，基线按平台隔离
+PLATFORM = sys.platform  # win32 / linux / darwin，基线按平台隔离
 
 # 允许差异像素占比（默认 0.5%）。同一台机器上 offscreen 渲染是确定性的，
 # 正常情况 0 差异；阈值只用来容忍跨机器字体渲染的微小差异。
@@ -150,7 +159,7 @@ def _compare_images(expected: QImage, actual: QImage):
     diff_pixels = 0
     max_channel_diff = 0
     for i in range(0, len(expected_bytes), 4):
-        if expected_bytes[i:i + 4] != actual_bytes[i:i + 4]:
+        if expected_bytes[i : i + 4] != actual_bytes[i : i + 4]:
             diff_pixels += 1
             for j in range(4):
                 diff = abs(expected_bytes[i + j] - actual_bytes[i + j])
@@ -158,7 +167,10 @@ def _compare_images(expected: QImage, actual: QImage):
                     max_channel_diff = diff
     ratio = diff_pixels / pixel_count
     ok = ratio <= TOLERANCE_RATIO
-    return ok, f"差异像素 {diff_pixels}/{pixel_count}（{ratio:.2%}），最大通道差 {max_channel_diff}"
+    return (
+        ok,
+        f"差异像素 {diff_pixels}/{pixel_count}（{ratio:.2%}），最大通道差 {max_channel_diff}",
+    )
 
 
 def _save_diff(expected: QImage, actual: QImage, case: str) -> Path:
@@ -169,7 +181,7 @@ def _save_diff(expected: QImage, actual: QImage, case: str) -> Path:
     actual_bytes = bytes(actual.constBits())
     width = actual.width()
     for i in range(0, len(expected_bytes), 4):
-        if expected_bytes[i:i + 4] != actual_bytes[i:i + 4]:
+        if expected_bytes[i : i + 4] != actual_bytes[i : i + 4]:
             index = i // 4
             diff_img.setPixelColor(index % width, index // width, QColor(255, 0, 0))
     path = DIFF_DIR / f"{case}.png"
@@ -406,11 +418,15 @@ def test_window_maximized_corner(themed, update_baseline, qapp, theme):
     w.resize(320, 220)
     w.show()
     qapp.processEvents()
-    w.btn_max.click()          # 走真实交互路径：最大化 + 图标切 restore
+    w.btn_max.click()  # 走真实交互路径：最大化 + 图标切 restore
     qapp.processEvents()
     assert w.isMaximized()
     assert w._radius == 0
     assert w.btn_max._icon_type == "restore"
-    img = w.grab(QRect(0, 0, 60, 60)).toImage().convertToFormat(QImage.Format.Format_ARGB32)
+    img = (
+        w.grab(QRect(0, 0, 60, 60))
+        .toImage()
+        .convertToFormat(QImage.Format.Format_ARGB32)
+    )
     w.hide()
     _check_snapshot("window_maximized_corner", theme, img, update_baseline)

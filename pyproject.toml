@@ -1,0 +1,45 @@
+# ---------- ruff 配置 ----------
+# 本文件只放 ruff 的配置，包构建仍由 setup.py 负责，两者互不干扰。
+
+[tool.ruff]
+# 与 setup.py 的 python_requires=">=3.8" 保持一致：
+# 设了 py38 后，UP 规则就不会把代码升级成 3.9+ 语法（如 str | None），
+# 否则装了库的用户在 Python 3.8 上会直接 SyntaxError。
+target-version = "py38"
+
+# 行宽：社区默认 88。项目现有 19 行超长，ruff format 会尽量重排。
+line-length = 88
+
+# 排除项：resources_rc.py 是 pyside6-rcc 编译产物，stubs/ 是 stubgen 生成的
+# .pyi 存根，两者都是生成产物，绝不能格式化/检查，否则每次重新生成都会
+# 产生噪声 diff。
+exclude = [
+    "NanUI/resources/resources_rc.py",
+    "stubs",
+    "build",
+    "dist",
+    ".venv",
+    "*.egg-info",
+]
+
+[tool.ruff.lint]
+# E/W：pycodestyle 风格；F：pyflakes（未定义/未使用）；
+# I：import 排序（isort）；UP：语法现代化；B：bugbear 易错写法；SIM：简化。
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+# E501（行长）交给 formatter 管：ruff format 会自动重排所有能断行的代码，
+# 剩下的超长行都是中文注释 / 字符串字面量——它们不能自动断行，
+# 硬拆会破坏注释可读性，所以这里显式忽略。
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+# examples/ 的约定是"NanUI 先 import，再 PySide6"。
+# 1. 声明 NanUI 为 first-party（避免被当成 third-party 排到 PySide6 之后）；
+# 2. 自定义 section 顺序：让 first-party 排在 third-party 之前，
+#    这样"NanUI → theme_manager → PySide6"的写法能原样保留。
+known-first-party = ["NanUI"]
+section-order = ["future", "standard-library", "first-party", "third-party"]
+
+[tool.ruff.format]
+# 与现有代码一致：双引号、空格缩进。
+quote-style = "double"
+indent-style = "space"

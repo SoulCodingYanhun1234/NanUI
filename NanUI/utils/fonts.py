@@ -1,8 +1,17 @@
+from typing import Optional
+
 from PySide6.QtGui import QFont
 
-DEFAULT_FAMILY = 'Microsoft YaHei'
+DEFAULT_FAMILY = "Microsoft YaHei"
 
-def get_font(size: int = 12, weight: int = QFont.Normal, family: str = None, italic: bool = False, underline: bool = False) -> QFont:
+
+def get_font(
+    size: int = 12,
+    weight: QFont.Weight = QFont.Weight.Normal,
+    family: Optional[str] = None,
+    italic: bool = False,
+    underline: bool = False,
+) -> QFont:
     """
     获取一个配置好的 QFont 对象。
 
@@ -11,11 +20,11 @@ def get_font(size: int = 12, weight: int = QFont.Normal, family: str = None, ita
 
     Args:
         size(int): 字体大小。
-        weight(int): 字体粗细，如 QFont.Normal, QFont.Bold, QFont.Light
+        weight(int): 字体粗细，如 QFont.Weight.Normal, QFont.Weight.Bold, QFont.Weight.Light
         family(str): 字体族名称。
         italic(bool): 是否斜体。
         underline(bool): 是否下划线。
-    
+
     Returns:
         QFont 对象。
     """
@@ -29,14 +38,17 @@ def get_font(size: int = 12, weight: int = QFont.Normal, family: str = None, ita
 
     return font
 
+
 def get_default_font(size: int = 12) -> QFont:
     """获取默认字体（常规粗细）"""
-    return get_font(size=size, weight=QFont.Normal)
+    return get_font(size=size, weight=QFont.Weight.Normal)
+
 
 def get_bold_font(size: int = 12) -> QFont:
     """获取加粗字体"""
-    return get_font(size=size, weight=QFont.Bold)
+    return get_font(size=size, weight=QFont.Weight.Bold)
+
 
 def get_light_font(size: int = 12) -> QFont:
     """获取细体字"""
-    return get_font(size=size, weight=QFont.Light)
+    return get_font(size=size, weight=QFont.Weight.Light)

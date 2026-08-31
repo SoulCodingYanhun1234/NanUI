@@ -56,8 +56,17 @@
   （`tests/test_visual_regression.py`：18 场景 × light/dark 两主题，基线按平台分目录存
   `tests/baselines/<platform>/<theme>/`，`--update-baseline` 重新生成，失败时差异图涂红；
   覆盖 hover / pressed / disabled / checked 态与 Window 最大化圆角）
-- [ ] **24. 代码规范**：ruff 格式化 + pre-commit 钩子
-- [ ] **25. 类型标注**：全库补 type hints，生成 `.pyi` 供 IDE 提示
+- [x] **24. 代码规范**：ruff 格式化 + pre-commit 钩子
+  （`pyproject.toml` 配置 ruff：py38 目标 / 88 行宽 / isort 保"NanUI 在前"约定 /
+  E501 交给 formatter；`.pre-commit-config.yaml` 固定 rev v0.16.5，
+  ruff --fix + ruff-format 双钩子；负向验证：违规代码被拦截并自动修复）
+- [x] **25. 类型标注**：全库补 type hints，生成 `.pyi` 供 IDE 提示
+  （20 源文件全补 `Optional`/`List` 标注（py38 兼容），mypy 严格校验从 57 错误降到 0，
+  顺带修复 2 个真实缺陷——`_squared_corners` 可空性、`scroll_area.widget()` None 解引用，
+  并全库 Qt6 枚举规范化 `Qt.MouseButton.LeftButton` 等；
+  `stubgen` 生成 `stubs/` 19 个 `.pyi` 外置存根（MYPYPATH 指向即生效），
+  包内加 `py.typed` 标记，pip 用户直接从源码获得类型提示；
+  `setup.py` / `MANIFEST.in` 已纳入打包，`pyproject.toml` 的 ruff exclude 排除生成产物）
 
 ---
 

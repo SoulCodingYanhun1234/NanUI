@@ -1,6 +1,10 @@
-from PySide6.QtWidgets import QProgressBar
-from PySide6.QtCore import Qt
+from typing import Optional
+
 from NanUI.utils import get_font
+
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QProgressBar, QWidget
+
 
 class ProgressBar(QProgressBar):
     """
@@ -19,7 +23,16 @@ class ProgressBar(QProgressBar):
         format (str): 显示格式。默认为 "%p%"（显示百分比）。
     """
 
-    def __init__(self, parent=None, font:str=None, font_size:int=12, minimum:int=0, maximum:int=100, value:int=0, format:str='%p%'):
+    def __init__(
+        self,
+        parent: Optional[QWidget] = None,
+        font: Optional[str] = None,
+        font_size: int = 12,
+        minimum: int = 0,
+        maximum: int = 100,
+        value: int = 0,
+        format: str = "%p%",
+    ) -> None:
         super().__init__(parent)
 
         self.setFont(get_font(size=font_size, family=font))
@@ -28,4 +41,3 @@ class ProgressBar(QProgressBar):
         self.setValue(value)
         self.setFormat(format)
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-

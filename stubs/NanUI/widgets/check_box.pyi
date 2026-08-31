@@ -1,0 +1,6 @@
+from NanUI.utils import get_font as get_font
+from PySide6.QtWidgets import QCheckBox, QWidget
+
+class CheckBox(QCheckBox):
+    def __init__(self, text: str = '', parent: QWidget | None = None, font: str | None = None, font_size: int = 14, checked: bool = False) -> None: ...
+    def toggle(self) -> None: ...

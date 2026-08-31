@@ -1,6 +1,9 @@
-from PySide6.QtWidgets import QCheckBox
-from PySide6.QtGui import QFont
+from typing import Optional
+
 from NanUI.utils import get_font
+
+from PySide6.QtWidgets import QCheckBox, QWidget
+
 
 class CheckBox(QCheckBox):
     """
@@ -16,11 +19,19 @@ class CheckBox(QCheckBox):
         font_size (int): 字体大小（磅值）。默认为 14。
         checked (bool): 是否在创建时处于选中状态。默认为 False。
     """
-    def __init__(self, text: str = '', parent = None, font: str = None, font_size: int = 14, checked: bool = False):
+
+    def __init__(
+        self,
+        text: str = "",
+        parent: Optional[QWidget] = None,
+        font: Optional[str] = None,
+        font_size: int = 14,
+        checked: bool = False,
+    ) -> None:
         super().__init__(text, parent)
 
         self.setFont(get_font(size=font_size, family=font))
         self.setChecked(checked)
 
-    def toggle(self):
+    def toggle(self) -> None:
         self.setChecked(not self.isChecked())

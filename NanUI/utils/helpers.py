@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QApplication
+from PySide6.QtWidgets import QApplication, QWidget
 
 
 def center_window(window: QWidget) -> None:
@@ -15,7 +15,7 @@ def center_window(window: QWidget) -> None:
         None。
     """
     screen = window.screen() or QApplication.primaryScreen()
-    if screen is None:            # 极端情况下没有屏幕，直接放弃
+    if screen is None:  # 极端情况下没有屏幕，直接放弃
         return
     geo = screen.availableGeometry()
     size = window.size()

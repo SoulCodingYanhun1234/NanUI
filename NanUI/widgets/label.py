@@ -1,7 +1,10 @@
-from PySide6.QtWidgets import QLabel
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont
+from typing import Optional
+
 from NanUI.utils import get_font
+
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QLabel, QWidget
+
 
 class Label(QLabel):
     """
@@ -16,11 +19,17 @@ class Label(QLabel):
         font_size (int): 字体大小（磅值）。默认为 12。
     """
 
-    def __init__(self, text: str = '', parent = None, font: str = None, font_size: int = 12):
+    def __init__(
+        self,
+        text: str = "",
+        parent: Optional[QWidget] = None,
+        font: Optional[str] = None,
+        font_size: int = 12,
+    ) -> None:
         super().__init__(text, parent)
 
         self.font_size = font_size
         self.font_ = font
 
         self.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.setFont(get_font(size=font_size, family = font))
+        self.setFont(get_font(size=font_size, family=font))

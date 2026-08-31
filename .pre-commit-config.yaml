@@ -1,0 +1,17 @@
+# ---------- pre-commit 钩子配置 ----------
+# 每次 git commit 时自动运行，全部通过才允许提交。
+# 首次运行会从 GitHub 下载 ruff 的 hook 环境（需要网络）。
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # rev 必须固定到具体版本（与本地 pip 安装的 ruff 版本一致），不能写 main，
+    # 否则 CI / 其他机器拉到的 ruff 版本不同，检查结果会飘忽不定。
+    # 本地安装版本：ruff 0.16.5
+    rev: v0.16.5
+    hooks:
+      # lint：先自动修复，修复过就算失败（--exit-non-zero-on-fix），
+      # 逼你重新 git add，确保提交的是修好的版本。
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      # 格式校验：不满足 ruff format 就阻止提交。
+      - id: ruff-format

@@ -1,2 +1,4 @@
 include NanUI/styles/*.qss
 include NanUI/resources/*.py
+include NanUI/py.typed
+recursive-include stubs *.pyi

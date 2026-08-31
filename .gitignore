@@ -11,5 +11,16 @@ __pycache__/
 dist/
 build/
 
+# 工具缓存目录（mypy/pytest/ruff 各自会在缓存目录里生成内部 .gitignore 自保护，
+# 但显式声明更稳妥，防止工具升级后行为变化导致缓存泄漏进版本库）
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.dmypy.json
+
+# macOS / Windows 系统文件（仓库是开源项目，跨平台协作者可能引入）
+.DS_Store
+Thumbs.db
+
 # 视觉回归测试的临时差异图（基线 tests/baselines/<platform> 是要提交的）
 tests/baselines/_diffs/

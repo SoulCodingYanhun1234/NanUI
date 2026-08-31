@@ -10,33 +10,54 @@
     python -m pytest tests/ -v
 """
 
-import pytest
-from PySide6.QtWidgets import QWidget, QVBoxLayout
-
 from NanUI import (
-    Window, Label, PushButton, LineEdit, TextEdit,
-    CheckBox, RadioButton, ComboBox, ProgressBar, Card, ScrollArea,
+    Card,
+    CheckBox,
+    ComboBox,
+    Label,
+    LineEdit,
+    ProgressBar,
+    PushButton,
+    RadioButton,
+    ScrollArea,
+    TextEdit,
+    Window,
 )
 from NanUI.utils.theme_manager import apply_theme, current_theme
 
+from PySide6.QtWidgets import QVBoxLayout, QWidget
 
 # ---------- 顶层导出 ----------
 
+
 def test_top_level_import():
     """`from NanUI import ...` 应能拿到全部 11 个控件。"""
-    assert all(cls is not None for cls in (
-        Window, Label, PushButton, LineEdit, TextEdit,
-        CheckBox, RadioButton, ComboBox, ProgressBar, Card, ScrollArea,
-    ))
+    assert all(
+        cls is not None
+        for cls in (
+            Window,
+            Label,
+            PushButton,
+            LineEdit,
+            TextEdit,
+            CheckBox,
+            RadioButton,
+            ComboBox,
+            ProgressBar,
+            Card,
+            ScrollArea,
+        )
+    )
 
 
 # ---------- 控件创建与基础行为 ----------
+
 
 def test_window_create(qapp):
     """Window 可创建，setTitle 更新标题栏文字。"""
     w = Window(resizable=True)
     w.setTitle("测试标题")
-    assert w.title_label.text() == "测试标题"   # setTitle 更新的是标题栏 label
+    assert w.title_label.text() == "测试标题"  # setTitle 更新的是标题栏 label
     w.close()
 
 
@@ -102,7 +123,7 @@ def test_combobox_items(qapp):
     """ComboBox 初始选项 + 选中变化信号。"""
     cbb = ComboBox(items=["一", "二", "三"])
     assert cbb.count() == 3
-    assert not cbb.isEditable()          # read_only 默认 True
+    assert not cbb.isEditable()  # read_only 默认 True
     changed = []
     cbb.currentTextChanged.connect(changed.append)
     cbb.setCurrentIndex(1)
@@ -137,20 +158,21 @@ def test_scrollarea_widget(qapp):
 
 # ---------- 主题系统 ----------
 
+
 def test_theme_switch_roundtrip(qapp):
     """light → dark 切换成功，且能切回。"""
     assert apply_theme(qapp, "light") is True
     assert current_theme() == "light"
     assert apply_theme(qapp, "dark") is True
     assert current_theme() == "dark"
-    assert apply_theme(qapp, "light") is True   # 还原，避免污染后续测试
+    assert apply_theme(qapp, "light") is True  # 还原，避免污染后续测试
     assert current_theme() == "light"
 
 
 def test_theme_missing_file(qapp):
     """不存在的主题返回 False 且不抛异常。"""
     assert apply_theme(qapp, "nope") is False
-    apply_theme(qapp, "light")                 # 还原
+    apply_theme(qapp, "light")  # 还原
 
 
 def test_window_renders(qapp):

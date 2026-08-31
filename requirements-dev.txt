@@ -1,0 +1,18 @@
+# ---------- 开发工具依赖 ----------
+# 仅 NanUI 的贡献者 / 开发者需要，普通用户安装 NanUI 时不需要装这些。
+# 安装方式：pip install -r requirements-dev.txt
+# 注意：开发工具一律 pin 死版本（==），与 .pre-commit-config.yaml 的 rev 保持一致，
+# 保证团队与 CI 环境一致。
+
+# 先装运行时依赖（PySide6）
+-r requirements.txt
+
+# 代码规范（第 24 项）：linter + formatter，pre-commit 双钩子
+ruff==0.16.5
+pre-commit==4.6.2
+
+# 类型检查（第 25 项）：mypy + stubgen
+mypy==2.3.1
+
+# 测试（第 21 项）：pytest + offscreen
+pytest==9.1.1
