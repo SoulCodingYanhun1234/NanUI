@@ -395,3 +395,44 @@ QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
     background: transparent;
 }
+/*-------------NanUI 扩展组件-------------*/
+QPushButton#nanSwitch { background: transparent; border: none; padding: 0; min-height: 0; }
+QSlider#nanSlider::groove:horizontal { height: 6px; background: #e3e8ef; border-radius: 3px; }
+QSlider#nanSlider::sub-page:horizontal { background: #8fb5fb; border-radius: 3px; }
+QSlider#nanSlider::handle:horizontal { width: 16px; margin: -5px 0; background: #ffffff; border: 2px solid #4f86f7; border-radius: 8px; }
+QSlider#nanSlider::groove:vertical { width: 6px; background: #e3e8ef; border-radius: 3px; }
+QSlider#nanSlider::add-page:vertical { background: #8fb5fb; border-radius: 3px; }
+QSlider#nanSlider::handle:vertical { height: 16px; margin: 0 -5px; background: #ffffff; border: 2px solid #4f86f7; border-radius: 8px; }
+QSpinBox#nanSpinBox { background:#ffffff; border:1px solid #d0d7de; border-radius:8px; padding:6px 8px; min-height:26px; }
+QWidget#segmentedControl { background:#edf1f6; border-radius:10px; }
+QPushButton#segmentButton { background:transparent; border:none; border-radius:7px; padding:5px 12px; min-height:22px; }
+QPushButton#segmentButton:checked { background:#ffffff; border:1px solid #d0d7de; }
+QLabel#badge { color:#ffffff; background:#e5484d; border-radius:9px; padding:0px 5px; font-size:11px; font-weight:600; min-height:18px; max-height:18px; }
+QFrame#toast { background:#ffffff; border:1px solid #d0d7de; border-radius:10px; }
+QLabel#toastLabel { background:transparent; padding:0; min-height:0; color:#1c1c1c; }
+QDialog#nanDialog { background:#f5f7fa; }
+QLabel#dialogTitle { background:transparent; font-size:16px; font-weight:600; padding:2px 0; }
+QFrame#skeleton { background:#e8edf3; border:none; border-radius:8px; }
+QFrame#navigationSideBar { background:#ffffff; border:1px solid #d0d7de; border-radius:10px; }
+QPushButton#navItem { background:transparent; border:none; text-align:left; }
+QPushButton#navItem:checked { background:#e8f0fe; }
+QPushButton#navCollapseButton { background:transparent; border:none; }
+QTabWidget#nanTabWidget::pane { border:1px solid #d0d7de; border-radius:8px; top:-1px; }
+QTabWidget#nanTabWidget QTabBar::tab { background:transparent; padding:7px 14px; border-bottom:2px solid transparent; }
+QTabWidget#nanTabWidget QTabBar::tab:selected { color:#245dcc; border-bottom:2px solid #4f86f7; }
+QFrame#dividerLine { color:#d8dee6; background:#d8dee6; max-height:1px; max-width:1px; border:none; }
+QLabel#dividerText { background:transparent; color:#6b7280; padding:0 4px; min-height:0; }
+QFrame#collapsible { border:1px solid #d0d7de; border-radius:8px; background:#ffffff; }
+QPushButton#collapsibleHeader { border:none; border-radius:8px; text-align:left; background:transparent; }
+QWidget#collapsibleContent { background:transparent; }
+QTableWidget#nanTable, QListWidget#nanListView { background:#ffffff; alternate-background-color:#f7f9fb; border:1px solid #d0d7de; border-radius:8px; outline:none; }
+QTableWidget#nanTable::item:selected, QListWidget#nanListView::item:selected { background:#e8f0fe; color:#1c1c1c; border-radius:5px; }
+QTableWidget#nanTable QHeaderView::section { background:#f1f4f8; border:none; border-bottom:1px solid #d0d7de; padding:7px; }
+QLabel#filePickerLabel { background:#ffffff; border:1px solid #d0d7de; border-radius:8px; padding:6px 10px; }
+QFrame#dropZone { border:2px dashed #b8c2cf; border-radius:12px; background:#fafcff; min-height:100px; }
+QLabel#dropZoneLabel { background:transparent; color:#667085; }
+QMenu#nanContextMenu { border-radius:10px; }
+QToolTip { color:#1c1c1c; background:#ffffff; border:1px solid #d0d7de; border-radius:6px; padding:5px 8px; }
+QFrame#toast[kind="success"] { border-left:4px solid #2e9b5f; }
+QFrame#toast[kind="warning"] { border-left:4px solid #d99a2b; }
+QFrame#toast[kind="error"] { border-left:4px solid #e5484d; }

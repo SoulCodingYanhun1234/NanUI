@@ -1,28 +1,5 @@
-from .widgets import (
-    Card,
-    CheckBox,
-    ComboBox,
-    Label,
-    LineEdit,
-    ProgressBar,
-    PushButton,
-    RadioButton,
-    ScrollArea,
-    TextEdit,
-    Window,
-)
+from .widgets import *
+from .widgets import __all__ as _widgets_all
 
-__version__ = "0.2.2"
-__all__ = [
-    "Label",
-    "Window",
-    "PushButton",
-    "LineEdit",
-    "TextEdit",
-    "CheckBox",
-    "RadioButton",
-    "ComboBox",
-    "ProgressBar",
-    "Card",
-    "ScrollArea",
-]
+__version__ = "0.3.0"
+__all__ = list(_widgets_all)
