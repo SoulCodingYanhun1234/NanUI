@@ -7,14 +7,14 @@ class TextEdit(QTextEdit):
     """
     多行文本框控件。
 
-    继承自 QTextEdit。预设了圆角、有无焦点时的样式，并可自定义字体和字体大小。
-    右键菜单与 LineEdit 风格保持一致。
+    继承自 QTextEdit。预设了圆角、有无焦点时的样式（由 QSS 主题控制），
+    并可自定义字体和字号。右键菜单与 LineEdit 风格保持一致。
 
     Args:
-        parent (QWidget, optional): 父控件对象，默认为 None。
-        font (str): 字体族名称，若不传则使用全局默认。
-        font_size (int): 字体大小，默认为 11。
-        placeholder (str): 占位提示文本（若 PySide6 版本支持）。
+        parent (QWidget, optional): 父控件对象。默认为 None。
+        font (str, optional): 字体族名称。默认为 None，即使用全局默认字体（微软雅黑）。
+        font_size (int): 字体大小（磅值）。默认为 11。
+        placeholder (str): 框内没有文本时显示的提示文本。默认为空字符串。
     """
     def __init__(self, parent=None, font: str = None, font_size: int = 11, placeholder: str = ''):
         super().__init__(parent)

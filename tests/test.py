@@ -1,5 +1,6 @@
 from NanUI import Window, Label, PushButton, LineEdit, TextEdit, CheckBox, RadioButton, ComboBox, ProgressBar, Card, ScrollArea
-from NanUI.utils.theme_manager import apply_theme
+from NanUI.utils import apply_theme
+from NanUI.utils import center_window
 from PySide6.QtWidgets import QApplication, QVBoxLayout, QHBoxLayout
 from NanUI.resources import resources_rc
 
@@ -55,5 +56,6 @@ if __name__ == '__main__':
     app = QApplication([])
     apply_theme(app, 'light')
     window = MainWindow()
+    center_window(window)
     window.show()
     app.exec()

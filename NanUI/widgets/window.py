@@ -11,7 +11,15 @@ from NanUI.utils.theme_manager import get_color
 
 class CaptionButton(QPushButton):
     """
-    Win11 风格的标题栏按钮，使用 QPainter 自绘图标。
+    标题栏按钮（Win11 风格）。
+
+    继承自 QPushButton。图标由 QPainter 自绘，背景和图标颜色取自当前主题
+    （theme_manager.THEME_COLORS），所以 QSS 改不动它的颜色，只能改尺寸相关属性。
+
+    Args:
+        icon_type (str): 图标类型。可选值：'minimize'（最小化）、'maximize'（最大化）、
+            'restore'（恢复）、'close'（关闭）。默认为 'minimize'。
+        parent (QWidget, optional): 父控件对象。默认为 None。
     """
 
     def __init__(self, icon_type: str = "minimize", parent=None):
@@ -105,8 +113,16 @@ class CaptionButton(QPushButton):
 
 class Window(QWidget):
     """
-    无边框、带圆角、可拖动（仅标题栏）、可调整大小（可选）的自定义窗口基类。
-    内置标题栏，包含最小化、最大化/恢复、关闭按钮。
+    无边框圆角窗口基类。
+
+    继承自 QWidget。无系统边框，带圆角，标题栏可拖动窗口（仅标题栏区域），
+    内置最小化、最大化/恢复、关闭三个按钮，用 setTitle() 设置窗口标题。
+    可选是否允许鼠标拖动窗口边缘调整大小。
+
+    Args:
+        parent (QWidget, optional): 父控件对象。默认为 None。
+        radius (int): 窗口圆角半径（像素）。默认为 12。
+        resizable (bool): 是否允许调整窗口大小。默认为 False。
     """
 
     def __init__(self, parent=None, radius: int = 12, resizable: bool = False):

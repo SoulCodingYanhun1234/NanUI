@@ -7,13 +7,13 @@ class Label(QLabel):
     """
     标签控件。
 
-    继承自 QLabel。预设了圆角样式，并可自定义字体和大小。
+    继承自 QLabel。预设了圆角样式（由 QSS 主题控制），并可自定义字体和字号。
 
     Args:
-        text (str): 按钮显示的初始文本。默认为空字符串。
+        text (str): 标签上显示的文本。默认为空字符串。
         parent (QWidget, optional): 父控件对象。默认为 None。
-        font (str): 按钮文本的字体。默认为微软雅黑。
-        font_size (int): 按钮文本的大小。默认为 12 (px)。
+        font (str, optional): 字体族名称。默认为 None，即使用全局默认字体（微软雅黑）。
+        font_size (int): 字体大小（磅值）。默认为 12。
     """
 
     def __init__(self, text: str = '', parent = None, font: str = None, font_size: int = 12):

@@ -3,7 +3,7 @@
 """
 
 from NanUI import Window, Label, PushButton, LineEdit, TextEdit, CheckBox, RadioButton, ComboBox, ProgressBar, Card, ScrollArea
-from NanUI.utils.theme_manager import apply_theme
+from NanUI.utils import apply_theme
 from PySide6.QtWidgets import QApplication, QVBoxLayout, QHBoxLayout
 from NanUI.resources import resources_rc
 

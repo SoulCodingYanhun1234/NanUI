@@ -7,13 +7,15 @@ class ScrollArea(QScrollArea):
     可滚动区域控件。
 
     提供一个带滚动条的可视区域，用于容纳超出显示范围的内容。
+    默认自带一个垂直布局，可直接用 addWidget() 添加控件；
+    也可以用 setContentLayout() 换入自定义布局。
     样式由 QSS 主题控制，与 NanUI 整体风格保持一致。
     代码由 DeepSeek 网页版提供。
 
     Args:
-        parent (QWidget, optional): 父控件。
-        font (str): 字体。
-        font_size (int): 字体大小。
+        parent (QWidget, optional): 父控件对象。默认为 None。
+        font (str, optional): 字体族名称。默认为 None，即使用全局默认字体（微软雅黑）。
+        font_size (int): 字体大小（磅值）。默认为 12。
     """
 
     def __init__(self, parent=None, font: str = None, font_size: int = 12):

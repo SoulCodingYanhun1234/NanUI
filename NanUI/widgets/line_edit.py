@@ -5,17 +5,17 @@ from PySide6.QtGui import QAction, QKeySequence
 
 class LineEdit(QLineEdit):
     """
-    单行文本框控件。
+    单行输入框控件。
 
-    继承自 QLineEdit。预设了圆角、有无焦点时的样式，并可自定义字体和字体大小。
-    拥有自定义右键菜单。
+    继承自 QLineEdit。预设了圆角、有无焦点时的样式（由 QSS 主题控制），
+    并可自定义字体和字号。拥有自定义右键菜单（撤回、重做、剪切、复制、粘贴、删除、全选、清空）。
 
     Args:
-        text (str): 默认文本框内的文本，默认为空。
-        parent (QWidget, optional): 父控件对象，默认为 None。
-        font (str): 字体。
-        font_size (int): 字体大小。
-        placeholder (str): 框内没有文本时显示的提示文本。
+        text (str): 输入框内的初始文本。默认为空字符串。
+        parent (QWidget, optional): 父控件对象。默认为 None。
+        font (str, optional): 字体族名称。默认为 None，即使用全局默认字体（微软雅黑）。
+        font_size (int): 字体大小（磅值）。默认为 14。
+        placeholder (str): 框内没有文本时显示的提示文本。默认为空字符串。
     """
     def __init__(self, text: str = '', parent = None, font: str = None, font_size: int = 14, placeholder: str = ''):
         super().__init__(text, parent)

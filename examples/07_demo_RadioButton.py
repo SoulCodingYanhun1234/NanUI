@@ -3,7 +3,7 @@
 """
 
 from NanUI import Window, RadioButton
-from NanUI.utils.theme_manager import apply_theme
+from NanUI.utils import apply_theme
 from PySide6.QtWidgets import QApplication, QVBoxLayout
 
 class MainWindow(Window):

@@ -10,3 +10,6 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+
+# 视觉回归测试的临时差异图（基线 tests/baselines/<platform> 是要提交的）
+tests/baselines/_diffs/
